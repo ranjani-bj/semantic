@@ -14,39 +14,51 @@ jobs:
 
       - name: List directory contents
         run: ls -la  # List files in the working directory
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'  # Specify your Node.js version
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Create .releaserc.json if not exists
+      - name: Set up nvm
         run: |
-          if [ ! -f .releaserc.json ]; then
-            echo '{
-              "branches": ["main"],
-              "plugins": [
-                "@semantic-release/commit-analyzer",
-                "@semantic-release/release-notes-generator",
-                "@semantic-release/npm",
-                "@semantic-release/github"
-              ]
-            }' > .releaserc.json
+          # Install nvm
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+          # Source nvm
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          # Check if Node.js is installed
+          if ! command -v node &> /dev/null; then
+            echo "Node.js could not be found. Installing..."
+            nvm install 20
+          else
+            echo "Node.js is installed"
           fi
 
-      - name: Run semantic-release
-        id: release
-        
-        run: npm run release
+    
+        # Specify your Node.js version
 
-      - name: Set version in package.json
-        run: |
-          VERSION=$(npm pkg get version | tr -d '"')  # Get the new version from package.json
-          npm version $VERSION --no-git-tag-version  # Update package.json with the new version
-          git config user.email "action@github.com"
-          git config user.name "GitHub Action"
-          git commit -am "chore: bump version to $VERSION"  # Commit the version bump
-          git push origin main  # Push the changes
+      # - name: Install dependencies
+      #   run: npm install
+
+      # - name: Create .releaserc.json if not exists
+      #   run: |
+      #     if [ ! -f .releaserc.json ]; then
+      #       echo '{
+      #         "branches": ["main"],
+      #         "plugins": [
+      #           "@semantic-release/commit-analyzer",
+      #           "@semantic-release/release-notes-generator",
+      #           "@semantic-release/npm",
+      #           "@semantic-release/github"
+      #         ]
+      #       }' > .releaserc.json
+      #     fi
+
+      # - name: Run semantic-release
+      #   id: release
+        
+      #   run: npm run release
+
+      # - name: Set version in package.json
+      #   run: |
+      #     VERSION=$(npm pkg get version | tr -d '"')  # Get the new version from package.json
+      #     npm version $VERSION --no-git-tag-version  # Update package.json with the new version
+      #     git config user.email "action@github.com"
+      #     git config user.name "GitHub Action"
+      #     git commit -am "chore: bump version to $VERSION"  # Commit the version bump
+      #     git push origin main  # Push the changes
