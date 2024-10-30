@@ -14,20 +14,31 @@ jobs:
 
       - name: List directory contents
         run: ls -la  # List files in the working directory
-      - name: Set up nvm
+
+      - name: Set up Node.js
+        shell: bash
         run: |
-          # Install nvm
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-          # Source nvm
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          # Check if Node.js is installed
-          if ! command -v node &> /dev/null; then
-            echo "Node.js could not be found. Installing..."
+          if ! nvm ls 20 > /dev/null 2>&1; then 
+            echo "Node.js is not installed. Installing..."
             nvm install 20
-          else
-            echo "Node.js is installed"
+          else 
+            echo "Node.js is already installed."
           fi
+
+      # - name: Set up nvm
+      #   run: |
+      #     # Install nvm
+      #     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+      #     # Source nvm
+      #     export NVM_DIR="$HOME/.nvm"
+      #     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      #     # Check if Node.js is installed
+      #     if ! command -v node &> /dev/null; then
+      #       echo "Node.js could not be found. Installing..."
+      #       nvm install 20
+      #     else
+      #       echo "Node.js is installed"
+      #     fi
 
     
         # Specify your Node.js version
