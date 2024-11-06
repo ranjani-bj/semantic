@@ -1,8 +1,9 @@
 name: Release
 
 on:
-  workflow_dispatch:  # Allows manual triggering from GitHub UI
-
+  push:
+    branches:
+      - main
 jobs:
   release:
     runs-on: ubuntu-latest
