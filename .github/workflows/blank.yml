@@ -46,15 +46,10 @@
     
 
 
-
 name: Release
 
 on:
   workflow_dispatch:  # Allows manual triggering from GitHub UI
-  # If you want this to run on specific branches or events, you can change this:
-  # push:
-  #   branches:
-  #     - main  # Replace with your default branch, e.g., 'main' or 'master'
 
 jobs:
   release:
@@ -74,14 +69,13 @@ jobs:
           # Source nvm
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          # Check if Node.js is installed
-          if ! command -v node &> /dev/null; then
-            echo "Node.js could not be found. Installing..."
-            nvm install 20
-          else
-            echo "Node.js is installed"
-          fi
-
+          # Install Node.js version >=20.8.1
+          nvm install 20.8.1  # Explicitly install the required version
+          # Use the installed Node.js version
+          nvm use 20.8.1
+          # Check Node.js version
+          node --version
+          
       - name: Create .releaserc.json if not exists
         run: |
           if [ ! -f .releaserc.json ]; then
