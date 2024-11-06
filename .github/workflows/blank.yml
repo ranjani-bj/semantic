@@ -34,12 +34,12 @@ jobs:
         run: |
           if [ ! -f .releaserc.json ]; then
             echo '{
-              "branches": ["main"],
+              "branches": ["feature"],
               "plugins": [
                 "@semantic-release/commit-analyzer",
                 "@semantic-release/release-notes-generator",
-                "@semantic-release/git",
-                "@semantic-release/github"
+                "@semantic-release/github",
+                "@semantic-release/git"
               ]
             }' > .releaserc.json
           fi
