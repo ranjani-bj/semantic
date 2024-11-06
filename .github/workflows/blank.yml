@@ -52,6 +52,8 @@ jobs:
           npm install --save-dev semantic-release @semantic-release/git @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/github
 
       - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Set the GitHub token here
         run: |
           # Ensure nvm is available and use Node.js 20.8.1
           export NVM_DIR="$HOME/.nvm"
