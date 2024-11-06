@@ -1,51 +1,3 @@
-# name: Release
-
-# on:
-#   workflow_dispatch:
-#  # Change this to your default branch if different
-
-# jobs:
-#   release:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-
-#       - name: List directory contents
-#         run: ls -la  # List files in the working directory
-
-
-#       - name: Set up nvm
-#         run: |
-#           # Install nvm
-#           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-#           # Source nvm
-#           export NVM_DIR="$HOME/.nvm"
-#           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-#           # Check if Node.js is installed
-#           if ! command -v node &> /dev/null; then
-#             echo "Node.js could not be found. Installing..."
-#             nvm install 20
-#           else
-#             echo "Node.js is installed"
-#           fi
-#       - name: Create .releaserc.json if not exists
-#         run: |
-#           if [ ! -f .releaserc.json ]; then
-#             echo '{
-#               "branches": ["feature"],
-#               "plugins": [
-#                 "@semantic-release/commit-analyzer",
-#                 "@semantic-release/release-notes-generator",
-#                 "@semantic-release/github",
-#                 "@semantic-release/git"
-#               ]
-#             }' > .releaserc.json
-#           fi
-    
-
-
 name: Release
 
 on:
@@ -62,18 +14,18 @@ jobs:
       - name: List directory contents
         run: ls -la  # List files in the working directory for debugging
 
-      - name: Set up nvm
+      - name: Set up nvm and Node.js 20.8.1
         run: |
           # Install nvm
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-          # Source nvm
+          # Source nvm and ensure nvm command is available
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           # Install Node.js version >=20.8.1
-          nvm install 20.8.1  # Explicitly install the required version
-          # Use the installed Node.js version
+          nvm install 20.8.1
+          # Use the correct Node.js version
           nvm use 20.8.1
-          # Check Node.js version
+          # Verify the installed Node.js version
           node --version
           
       - name: Create .releaserc.json if not exists
@@ -92,8 +44,18 @@ jobs:
 
       - name: Install dependencies
         run: |
+          # Ensure nvm is available and use Node.js 20.8.1
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm use 20.8.1
+          # Install required dependencies
           npm install --save-dev semantic-release @semantic-release/git @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/github
 
       - name: Run semantic-release
         run: |
+          # Ensure nvm is available and use Node.js 20.8.1
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm use 20.8.1
+          # Run semantic-release
           npx semantic-release
